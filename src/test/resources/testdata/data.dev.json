@@ -1,0 +1,42 @@
+{
+  "testdata":
+  [
+    {"testname":"verifyMyntraLoginLogout",
+      "iteration" : [
+        {
+          "username":"wizdomqa.ie@gmail.com",
+          "password":"Wizdomqa12345!"
+        },
+        {
+          "username":"randon.email@gmail.com",
+          "password":"Random12345!"
+        }
+      ]
+    },
+    {"testname":"verifyMyntraProductAddToCart",
+      "iteration" : [
+        {
+          "username":"wizdomqa.ie@gmail.com",
+          "password":"Wizdomqa12345!",
+          "ProductA":"prodA1",
+          "ProductB":"prodB1",
+          "ProductC":"prodC1"
+        },
+        {
+          "username":"wizdomqa.ie@gmail.com",
+          "password":"Wizdomqa12345!",
+          "ProductA":"prodA2",
+          "ProductB":"prodB2",
+          "ProductC":"prodC2"
+        },
+        {
+          "username":"wizdomqa.ie@gmail.com",
+          "password":"Wizdomqa12345!",
+          "ProductA":"prodA3",
+          "ProductB":"prodB3",
+          "ProductC":"prodC3"
+        }
+      ]
+    }
+  ]
+}
