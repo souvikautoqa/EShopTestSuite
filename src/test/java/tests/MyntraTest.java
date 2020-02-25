@@ -1,5 +1,6 @@
 package tests;
 
+import com.relevantcodes.extentreports.LogStatus;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.MyntraHome;
@@ -15,18 +16,29 @@ public class MyntraTest extends TestBase{
 
 	@Test(dataProvider = "getData")
 	public void verifyMyntraLoginLogout(int itr, Map<String,String> data) throws Exception {
-		home = new MyntraHome(getDriver());
-		home.navigateToLoginPage();
-		login = new MyntraLogin(getDriver());
-		login.performLogin(data.get("username"),data.get("password"));
-		home = new MyntraHome(getDriver());
-		if(itr==1){
-			home.performLogout();
+		try{
+			home = new MyntraHome(getDriver());
+			home.navigateToLoginPage();
+			report().log(LogStatus.INFO,"Navigation to Login Page is successfull");
+			takeSnapShot();
+			login = new MyntraLogin(getDriver());
+			login.performLogin(data.get("username"),data.get("password"));
+			report().log(LogStatus.PASS,"Login to Myntra is successfull");
+			home = new MyntraHome(getDriver());
+			if(itr==1){
+				home.performLogout();
+			}
+			if(itr==2){
+				if(home.verifyLoginError("Account does not exist")){
+					report().log(LogStatus.PASS,"Account does not exist error displayed succesfully");
+				}else{
+					report().log(LogStatus.FAIL,"Account does not exist error no displayed");
+				}
+			}
+		}catch(Exception e){
+			report().log(LogStatus.FAIL,e.getMessage());
 		}
-		if(itr==2){
-			Assert.assertEquals(home.verifyLoginError("Account does not exist"),true,
-					" Account does not exist - error was not visible");
-		}
+
 	}
 
 }
