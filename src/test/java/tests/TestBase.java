@@ -1,7 +1,5 @@
 package tests;
 
-
-
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 import com.relevantcodes.extentreports.ExtentReports;
@@ -11,7 +9,6 @@ import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.*;
-
 import java.io.File;
 import java.io.FileReader;
 import java.io.Reader;
@@ -30,8 +27,7 @@ public class TestBase {
 	
 	private WebDriver driver;
 	private ITestData testData;
-	private ExtentReports extent;
-	private ExtentTest test;
+	private TestReporter reporter;
 
 
 	@Parameters({"env","browser"})
@@ -40,11 +36,7 @@ public class TestBase {
 		TestConfig.load(env);
 		TestConfig.addProperty("browser",browser);
 		TestConfig.addProperty("env",env);
-		extent = new ExtentReports("./TestReport.html", true);
-		File file = new File("./ScreenShots");
-		if(!file.exists()){
-			file.mkdir();
-		}
+		reporter = new TestReporter();
 	}
 
 	@BeforeClass
@@ -94,19 +86,19 @@ public class TestBase {
 
 	@BeforeMethod
 	public void initTestReport(Method method){
-		test = extent.startTest(method.getName(), "");
+		reporter.startReporting(method.getName(), driver);
 	}
 
-	public ExtentTest report(){
-		if(test!=null){
-			return test;
+	public TestReporter reporter(){
+		if(reporter!=null){
+			return reporter;
 		}
 		return null;
 	}
 
 	@AfterMethod
 	public void closeReport(){
-		extent.endTest(test);
+		reporter.endReporting();
 	}
 	
 	@AfterClass
@@ -118,34 +110,8 @@ public class TestBase {
 
 	@AfterSuite
 	public void clearReport(){
-		extent.flush();
-		extent.close();
+		reporter.flushReport();
 	}
-
-	public void takeSnapShot() throws Exception{
-		WebDriver driver = getDriver();
-	    //Convert web driver object to TakeScreenshot
-
-		TakesScreenshot scrShot =((TakesScreenshot) driver);
-		//Call getScreenshotAs method to create image file
-
-		File SrcFile=scrShot.getScreenshotAs(OutputType.FILE);
-		Path srcPath = SrcFile.toPath();
-		//Move image file to new destination
-
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-		LocalDateTime now = LocalDateTime.now();
-		String date = dtf.format(now);
-		date = date.replaceAll("/","").replaceAll(":","").replaceAll(" ","");
-
-		File DestFile=new File("./ScreenShots/"+date+".png");
-		Path destPath = DestFile.toPath();
-		//Copy file at destination
-
-		Files.copy(srcPath,destPath);
-
-	}
-
 
 
 }

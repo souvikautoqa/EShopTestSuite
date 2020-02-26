@@ -19,24 +19,25 @@ public class MyntraTest extends TestBase{
 		try{
 			home = new MyntraHome(getDriver());
 			home.navigateToLoginPage();
-			report().log(LogStatus.INFO,"Navigation to Login Page is successfull");
-			takeSnapShot();
+			reporter().report(LogStatus.INFO,"Checking for navigation to Myntra", "Navigation to Mytra is successfull");
 			login = new MyntraLogin(getDriver());
 			login.performLogin(data.get("username"),data.get("password"));
-			report().log(LogStatus.PASS,"Login to Myntra is successfull");
 			home = new MyntraHome(getDriver());
+			reporter().report(LogStatus.PASS,"Checking for successfull login", "Login to Myntra is successfull", true);
 			if(itr==1){
 				home.performLogout();
 			}
 			if(itr==2){
 				if(home.verifyLoginError("Account does not exist")){
-					report().log(LogStatus.PASS,"Account does not exist error displayed succesfully");
+					reporter().report(LogStatus.PASS,"Checking for Account doesnot exist error", "Account does not exist error displayed succesfully");
 				}else{
-					report().log(LogStatus.FAIL,"Account does not exist error no displayed");
+					reporter().report(LogStatus.FAIL,"Checking for Account doesnot exist error", "Account does not exist error not displayed", true);
+
 				}
 			}
 		}catch(Exception e){
-			report().log(LogStatus.FAIL,e.getMessage());
+			reporter().report(LogStatus.FAIL,"Exception Occurred", e.getMessage(), true);
+
 		}
 
 	}
