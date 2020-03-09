@@ -37,6 +37,7 @@ public class TestBase {
 	@Parameters({"env","browser"})
 	@BeforeSuite
 	public void initSuite(String env,String browser) throws Exception {
+		// Adding comment for Vidya Test
 		TestConfig.load(env);
 		TestConfig.addProperty("browser",browser);
 		TestConfig.addProperty("env",env);
